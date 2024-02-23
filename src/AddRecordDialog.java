@@ -28,24 +28,42 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 	JComboBox<String> genderCombo, departmentCombo, fullTimeCombo;
 	JButton save, cancel;
 	EmployeeDetails parent;
+	RecordManager recordManager;
 	// constructor for add record dialog
-	public AddRecordDialog(EmployeeDetails parent, ClearFields clearFields) {
+	public AddRecordDialog(EmployeeDetails parent, ClearFields clearFields, RecordManager recordManager) {
 		this.clearFields = clearFields;
 		setTitle("Add Record");
 		setModal(true);
+		this.recordManager = recordManager;
 		this.parent = parent;
 		this.parent.setEnabled(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		JScrollPane scrollPane = new JScrollPane(dialogPane());
 		setContentPane(scrollPane);
-		
+
 		getRootPane().setDefaultButton(save);
-		
+
 		setSize(500, 370);
 		setLocation(350, 250);
 		setVisible(true);
 	}// end AddRecordDialog
+
+	// add record to file
+	public void addRecord() {
+		boolean fullTime = false;
+		Employee theEmployee;
+
+		if (((String) fullTimeCombo.getSelectedItem()).equalsIgnoreCase("Yes"))
+			fullTime = true;
+		// create new Employee record with details from text fields
+		theEmployee = new Employee(Integer.parseInt(idField.getText()), ppsField.getText().toUpperCase(), surnameField.getText().toUpperCase(),
+				firstNameField.getText().toUpperCase(), genderCombo.getSelectedItem().toString().charAt(0),
+				departmentCombo.getSelectedItem().toString(), Double.parseDouble(salaryField.getText()), fullTime);
+		this.parent.currentEmployee = theEmployee;
+		this.parent.addRecord(theEmployee);
+		recordManager.displayRecords(theEmployee);
+	}
 
 	// initialize dialog container
 	public Container dialogPane() {
@@ -59,7 +77,7 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 		empDetails.add(new JLabel("ID:"), "growx, pushx");
 		empDetails.add(idField = new JTextField(20), "growx, pushx, wrap");
 		idField.setEditable(false);
-		
+
 
 		empDetails.add(new JLabel("PPS Number:"), "growx, pushx");
 		empDetails.add(ppsField = new JTextField(20), "growx, pushx, wrap");
@@ -100,27 +118,11 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 				if(field == ppsField)
 					field.setDocument(new JTextFieldLimit(9));
 				else
-				field.setDocument(new JTextFieldLimit(20));
+					field.setDocument(new JTextFieldLimit(20));
 			}// end else if
 		}// end for
 		idField.setText(Integer.toString(this.parent.getNextFreeId()));
 		return empDetails;
-	}
-
-	// add record to file
-	public void addRecord() {
-		boolean fullTime = false;
-		Employee theEmployee;
-
-		if (((String) fullTimeCombo.getSelectedItem()).equalsIgnoreCase("Yes"))
-			fullTime = true;
-		// create new Employee record with details from text fields
-		theEmployee = new Employee(Integer.parseInt(idField.getText()), ppsField.getText().toUpperCase(), surnameField.getText().toUpperCase(),
-				firstNameField.getText().toUpperCase(), genderCombo.getSelectedItem().toString().charAt(0),
-				departmentCombo.getSelectedItem().toString(), Double.parseDouble(salaryField.getText()), fullTime);
-		this.parent.currentEmployee = theEmployee;
-		this.parent.addRecord(theEmployee);
-		this.parent.displayRecords(theEmployee);
 	}
 
 	// check for input in text fields
