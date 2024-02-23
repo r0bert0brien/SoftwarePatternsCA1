@@ -1,4 +1,4 @@
-
+package original.src;
 /* * 
  * This is a menu driven system that will allow users to define a data structure representing a collection of 
  * records that can be displayed both by means of a dialog that can be scrolled through and by means of a table
@@ -170,35 +170,35 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}// end searchPanel
 
 	// initialize navigation panel
-	private JPanel navPanel() {
-		JPanel navPanel = new JPanel();
+	private JPanel navigPanel() {
+		JPanel navigPanel = new JPanel();
 
-		navPanel.setBorder(BorderFactory.createTitledBorder("Navigate"));
-		navPanel.add(first = new JButton(new ImageIcon(
+		navigPanel.setBorder(BorderFactory.createTitledBorder("Navigate"));
+		navigPanel.add(first = new JButton(new ImageIcon(
 				new ImageIcon("first.png").getImage().getScaledInstance(17, 17, java.awt.Image.SCALE_SMOOTH))));
 		first.setPreferredSize(new Dimension(17, 17));
 		first.addActionListener(this);
 		first.setToolTipText("Display first Record");
 
-		navPanel.add(previous = new JButton(new ImageIcon(new ImageIcon("prev.png").getImage()
+		navigPanel.add(previous = new JButton(new ImageIcon(new ImageIcon("prev.png").getImage()
 				.getScaledInstance(17, 17, java.awt.Image.SCALE_SMOOTH))));
 		previous.setPreferredSize(new Dimension(17, 17));
 		previous.addActionListener(this);
 		previous.setToolTipText("Display next Record");
 
-		navPanel.add(next = new JButton(new ImageIcon(
+		navigPanel.add(next = new JButton(new ImageIcon(
 				new ImageIcon("next.png").getImage().getScaledInstance(17, 17, java.awt.Image.SCALE_SMOOTH))));
 		next.setPreferredSize(new Dimension(17, 17));
 		next.addActionListener(this);
 		next.setToolTipText("Display previous Record");
 
-		navPanel.add(last = new JButton(new ImageIcon(
+		navigPanel.add(last = new JButton(new ImageIcon(
 				new ImageIcon("last.png").getImage().getScaledInstance(17, 17, java.awt.Image.SCALE_SMOOTH))));
 		last.setPreferredSize(new Dimension(17, 17));
 		last.addActionListener(this);
 		last.setToolTipText("Display last Record");
 
-		return navPanel;
+		return navigPanel;
 	}// end naviPanel
 
 	private JPanel buttonPanel() {
@@ -433,7 +433,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// search Employee by ID
 	public void searchEmployeeById() {
-		boolean foundEmployee = false;
+		boolean found = false;
 
 		try {// try to read correct correct from input
 				// if any active Employee record search for ID else do nothing
@@ -443,9 +443,9 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 				// if ID to search is already displayed do nothing else loop
 				// through records
 				if (searchByIdField.getText().trim().equals(idField.getText().trim()))
-					foundEmployee = true;
+					found = true;
 				else if (searchByIdField.getText().trim().equals(Integer.toString(currentEmployee.getEmployeeId()))) {
-					foundEmployee = true;
+					found = true;
 					displayRecords(currentEmployee);
 				} // end else if
 				else {
@@ -456,7 +456,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 						// if found break from loop and display Employee details
 						// else look for next record
 						if (Integer.parseInt(searchByIdField.getText().trim()) == currentEmployee.getEmployeeId()) {
-							foundEmployee = true;
+							found = true;
 							displayRecords(currentEmployee);
 							break;
 						} else
@@ -464,7 +464,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 					} // end while
 				} // end else
 					// if Employee not found display message
-				if (!foundEmployee)
+				if (!found)
 					JOptionPane.showMessageDialog(null, "Employee not found!");
 			} // end if
 		} // end try
@@ -478,7 +478,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// search Employee by surname
 	public void searchEmployeeBySurname() {
-		boolean foundEmployee = false;
+		boolean found = false;
 		// if any active Employee record search for ID else do nothing
 		if (isSomeoneToDisplay()) {
 			firstRecord();// look for first record
@@ -486,9 +486,9 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 			// if ID to search is already displayed do nothing else loop through
 			// records
 			if (searchBySurnameField.getText().trim().equalsIgnoreCase(surnameField.getText().trim()))
-				foundEmployee = true;
+				found = true;
 			else if (searchBySurnameField.getText().trim().equalsIgnoreCase(currentEmployee.getSurname().trim())) {
-				foundEmployee = true;
+				found = true;
 				displayRecords(currentEmployee);
 			} // end else if
 			else {
@@ -499,7 +499,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 					// if found break from loop and display Employee details
 					// else look for next record
 					if (searchBySurnameField.getText().trim().equalsIgnoreCase(currentEmployee.getSurname().trim())) {
-						foundEmployee = true;
+						found = true;
 						displayRecords(currentEmployee);
 						break;
 					} // end if
@@ -508,7 +508,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 				} // end while
 			} // end else
 				// if Employee not found display message
-			if (!foundEmployee)
+			if (!found)
 				JOptionPane.showMessageDialog(null, "Employee not found!");
 		} // end if
 		searchBySurnameField.setText("");
@@ -531,17 +531,17 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// get values from text fields and create Employee object
 	private Employee getChangedDetails() {
-		boolean isfullTime = false;
-		Employee changedEmployee;
+		boolean fullTime = false;
+		Employee theEmployee;
 		if (((String) fullTimeCombo.getSelectedItem()).equalsIgnoreCase("Yes"))
-			isfullTime = true;
+			fullTime = true;
 
-		changedEmployee = new Employee(Integer.parseInt(idField.getText()), ppsField.getText().toUpperCase(),
+		theEmployee = new Employee(Integer.parseInt(idField.getText()), ppsField.getText().toUpperCase(),
 				surnameField.getText().toUpperCase(), firstNameField.getText().toUpperCase(),
 				genderCombo.getSelectedItem().toString().charAt(0), departmentCombo.getSelectedItem().toString(),
-				Double.parseDouble(salaryField.getText()), isfullTime);
+				Double.parseDouble(salaryField.getText()), fullTime);
 
-		return changedEmployee;
+		return theEmployee;
 	}// end getChangedDetails
 
 	// add Employee object to fail
@@ -557,10 +557,10 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	private void deleteRecord() {
 		if (isSomeoneToDisplay()) {// if any active record in file display
 									// message and delete record
-			int deleteConfirmMsg = JOptionPane.showOptionDialog(frame, "Do you want to delete record?", "Delete",
+			int returnVal = JOptionPane.showOptionDialog(frame, "Do you want to delete record?", "Delete",
 					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 			// if answer yes delete (make inactive - empty) record
-			if (deleteConfirmMsg == JOptionPane.YES_OPTION) {
+			if (returnVal == JOptionPane.YES_OPTION) {
 				// open file for writing
 				application.openWriteFile(file.getAbsolutePath());
 				// delete (make inactive - empty) record in file proper position
@@ -674,11 +674,11 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	// check if file name has extension .dat
 	private boolean checkFileName(File fileName) {
 		boolean checkFile = false;
-		int fileLength = fileName.toString().length();
+		int length = fileName.toString().length();
 
 		// check if last characters in file name is .dat
-		if (fileName.toString().charAt(fileLength - 4) == '.' && fileName.toString().charAt(fileLength - 3) == 'd'
-				&& fileName.toString().charAt(fileLength - 2) == 'a' && fileName.toString().charAt(fileLength - 1) == 't')
+		if (fileName.toString().charAt(length - 4) == '.' && fileName.toString().charAt(length - 3) == 'd'
+				&& fileName.toString().charAt(length - 2) == 'a' && fileName.toString().charAt(length - 1) == 't')
 			checkFile = true;
 		return checkFile;
 	}// end checkFileName
@@ -793,26 +793,26 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// open file
 	private void openFile() {
-		final JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Open");
+		final JFileChooser fc = new JFileChooser();
+		fc.setDialogTitle("Open");
 		// display files in File Chooser only with extension .dat
-		fileChooser.setFileFilter(datfilter);
+		fc.setFileFilter(datfilter);
 		File newFile; // holds opened file name and path
 		// if old file is not empty or changes has been made, offer user to save
 		// old file
 		if (file.length() != 0 || change) {
-			int changeConfirmMsg = JOptionPane.showOptionDialog(frame, "Do you want to save changes?", "Save",
+			int returnVal = JOptionPane.showOptionDialog(frame, "Do you want to save changes?", "Save",
 					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 			// if user wants to save file, save it
-			if (changeConfirmMsg == JOptionPane.YES_OPTION) {
+			if (returnVal == JOptionPane.YES_OPTION) {
 				saveFile();// save file
 			} // end if
 		} // end if
 
-		int openFileChooser = fileChooser.showOpenDialog(EmployeeDetails.this);
+		int returnVal = fc.showOpenDialog(EmployeeDetails.this);
 		// if file been chosen, open it
-		if (openFileChooser == JFileChooser.APPROVE_OPTION) {
-			newFile = fileChooser.getSelectedFile();
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			newFile = fc.getSelectedFile();
 			// if old file wasn't saved and its name is generated file name,
 			// delete this file
 			if (file.getName().equals(generatedFileName))
@@ -836,10 +836,10 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 			// if changes has been made to text field offer user to save these
 			// changes
 			if (change) {
-				int confirmChangeMsg = JOptionPane.showOptionDialog(frame, "Do you want to save changes?", "Save",
+				int returnVal = JOptionPane.showOptionDialog(frame, "Do you want to save changes?", "Save",
 						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 				// save changes if user choose this option
-				if (confirmChangeMsg == JOptionPane.YES_OPTION) {
+				if (returnVal == JOptionPane.YES_OPTION) {
 					// save changes if ID field is not empty
 					if (!idField.getText().equals("")) {
 						// open file for writing
@@ -861,10 +861,10 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// save changes to current Employee
 	private void saveChanges() {
-		int confirmChangeMsg = JOptionPane.showOptionDialog(frame, "Do you want to save changes to current Employee?", "Save",
+		int returnVal = JOptionPane.showOptionDialog(frame, "Do you want to save changes to current Employee?", "Save",
 				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 		// if user choose to save changes, save changes
-		if (confirmChangeMsg == JOptionPane.YES_OPTION) {
+		if (returnVal == JOptionPane.YES_OPTION) {
 			// open file for writing
 			application.openWriteFile(file.getAbsolutePath());
 			// get changes for current Employee
@@ -880,19 +880,19 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// save file as 'save as'
 	private void saveFileAs() {
-		final JFileChooser fileChooser = new JFileChooser();
+		final JFileChooser fc = new JFileChooser();
 		File newFile;
 		String defaultFileName = "new_Employee.dat";
-		fileChooser.setDialogTitle("Save As");
+		fc.setDialogTitle("Save As");
 		// display files only with .dat extension
-		fileChooser.setFileFilter(datfilter);
-		fileChooser.setApproveButtonText("Save");
-		fileChooser.setSelectedFile(new File(defaultFileName));
+		fc.setFileFilter(datfilter);
+		fc.setApproveButtonText("Save");
+		fc.setSelectedFile(new File(defaultFileName));
 
-		int openSaveDialog = fileChooser.showSaveDialog(EmployeeDetails.this);
+		int returnVal = fc.showSaveDialog(EmployeeDetails.this);
 		// if file has chosen or written, save old file in new file
-		if (openSaveDialog == JFileChooser.APPROVE_OPTION) {
-			newFile = fileChooser.getSelectedFile();
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			newFile = fc.getSelectedFile();
 			// check for file name
 			if (!checkFileName(newFile)) {
 				// add .dat extension if it was not there
@@ -922,10 +922,10 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		// if file is not empty allow to save changes
 		if (file.length() != 0) {
 			if (changesMade) {
-				int confirmChangeMsg = JOptionPane.showOptionDialog(frame, "Do you want to save changes?", "Save",
+				int returnVal = JOptionPane.showOptionDialog(frame, "Do you want to save changes?", "Save",
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
 				// if user chooses to save file, save file
-				if (confirmChangeMsg == JOptionPane.YES_OPTION) {
+				if (returnVal == JOptionPane.YES_OPTION) {
 					saveFile();// save file
 					// delete generated file if user saved details to other file
 					if (file.getName().equals(generatedFileName))
@@ -933,7 +933,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 					System.exit(0);// exit application
 				} // end if
 					// else exit application
-				else if (confirmChangeMsg == JOptionPane.NO_OPTION) {
+				else if (returnVal == JOptionPane.NO_OPTION) {
 					// delete generated file if user chooses not to save file
 					if (file.getName().equals(generatedFileName))
 						file.delete();// delete file
@@ -959,10 +959,10 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	private String getFileName() {
 		String fileNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-";
 		StringBuilder fileName = new StringBuilder();
-		Random random = new Random();
+		Random rnd = new Random();
 		// loop until 20 character long file name is generated
 		while (fileName.length() < 20) {
-			int index = (int) (random.nextFloat() * fileNameChars.length());
+			int index = (int) (rnd.nextFloat() * fileNameChars.length());
 			fileName.append(fileNameChars.charAt(index));
 		}
 		String generatedfileName = fileName.toString();
@@ -1059,7 +1059,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		// add search panel to frame
 		dialog.add(searchPanel(), "width 400:400:400, growx, pushx");
 		// add navigation panel to frame
-		dialog.add(navPanel(), "width 150:150:150, wrap");
+		dialog.add(navigPanel(), "width 150:150:150, wrap");
 		// add button panel to frame
 		dialog.add(buttonPanel(), "growx, pushx, span 2,wrap");
 		// add details panel to frame

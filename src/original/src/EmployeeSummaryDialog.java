@@ -1,5 +1,7 @@
+package original.src;
 /*
  * 
+
  * This is the summary dialog for displaying all Employee details
  * 
  * */
@@ -69,7 +71,7 @@ public class EmployeeSummaryDialog extends JDialog implements ActionListener {
 			header.addElement(headerName[i]);
 		}// end for
 		// construnct table and choose table model for each column
-		tableModel = new DefaultTableModel() {
+		tableModel = new DefaultTableModel(this.allEmployees, header) {
 			public Class getColumnClass(int c) {
 				switch (c) {
 				case 0:
