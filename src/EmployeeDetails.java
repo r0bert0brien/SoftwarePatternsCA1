@@ -31,6 +31,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -53,13 +54,20 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	// decimal format for inactive currency text field
 	static final DecimalFormat format = new DecimalFormat("\u20ac ###,###,##0.00");
 	static RecordManager recordManager; //Used for the operations on record from the Record Manager Class
-	private static EmployeeDetails frame = new EmployeeDetails();
 	AddRecordDialog addRecordDialog;
 	ClearFields clearFields;
-	public EmployeeDetails() {
-        recordManager = new RecordManager(this, addRecordDialog);
-        frame = this;
+	static DialogFactory dialogFactory = new ConcreteDialogFactory();
+	private static EmployeeDetails frame = new EmployeeDetails(dialogFactory);
+	public EmployeeDetails(DialogFactory dialogFactory) {
+	    EmployeeDetails.dialogFactory = dialogFactory;
+	    recordManager = new RecordManager(this, addRecordDialog);
+	    frame = this;
+	}
+	
+	public static void setDialogFactory(DialogFactory factory) {
+        dialogFactory = factory;
     }
+
 	// decimal format for active currency text field
 	private static final DecimalFormat fieldFormat = new DecimalFormat("0.00");
 	// hold object start position in file
@@ -312,22 +320,28 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// display Employee summary dialog
 	private void displayEmployeeSummaryDialog() {
-		// display Employee summary dialog if these is someone to display
-		if (isSomeoneToDisplay())
-			new EmployeeSummaryDialog(getAllEmloyees());
-	}// end displaySummaryDialog
+	    // display Employee summary dialog if there is someone to display
+	    if (isSomeoneToDisplay()) {
+	        JDialog dialog = dialogFactory.createEmployeeSummaryDialog(EmployeeDetails.this, getAllEmloyees());
+	        dialog.setVisible(true);
+	    }
+	}
 
 	// display search by ID dialog
 	private void displaySearchByIdDialog() {
-		if (isSomeoneToDisplay())
-			new SearchByIdDialog(EmployeeDetails.this);
-	}// end displaySearchByIdDialog
+	    if (isSomeoneToDisplay()) {
+	        JDialog dialog = dialogFactory.createSearchByIdDialog(EmployeeDetails.this);
+	        dialog.setVisible(true);
+	    }
+	}
 
 	// display search by surname dialog
 	private void displaySearchBySurnameDialog() {
-		if (isSomeoneToDisplay())
-			new SearchBySurnameDialog(EmployeeDetails.this);
-	}// end displaySearchBySurnameDialog
+	    if (isSomeoneToDisplay()) {
+	        JDialog dialog = dialogFactory.createSearchBySurnameDialog(EmployeeDetails.this);
+	        dialog.setVisible(true);
+	    }
+	}
 
 	// search Employee by ID
 	public void searchEmployeeById() {

@@ -21,13 +21,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
+//Concrete dialog class for searching employees by ID
 public class SearchByIdDialog extends JDialog implements ActionListener {
 	EmployeeDetails parent;
 	JButton search, cancel;
 	JTextField searchField;
 	// constructor for SearchByIdDialog 
 	public SearchByIdDialog(EmployeeDetails parent) {
-		setTitle("Search by Surname");
+		setTitle("Search by ID"); //Fixed the typo here
 		setModal(true);
 		this.parent = parent;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
