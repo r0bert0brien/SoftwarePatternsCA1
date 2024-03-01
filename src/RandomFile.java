@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 public class RandomFile {
 	private RandomAccessFile output;
-	private RandomAccessFile input;
+	RandomAccessFile input;
 
 	// Create new file
 	public void createFile(String fileName) {

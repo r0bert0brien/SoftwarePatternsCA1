@@ -60,7 +60,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	private static EmployeeDetails frame = new EmployeeDetails(dialogFactory);
 	public EmployeeDetails(DialogFactory dialogFactory) {
 	    EmployeeDetails.dialogFactory = dialogFactory;
-	    recordManager = new RecordManager(this, addRecordDialog);
+	    recordManager = new RecordManager(this);
 	    frame = this;
 	}
 	
@@ -949,7 +949,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 					displayEmployeeSummaryDialog();
 		} else if (e.getSource() == create || e.getSource() == add) {
 			if (checkInput() && !checkForChanges())
-				new AddRecordDialog(EmployeeDetails.this, this.clearFields, recordManager);
+				addRecordDialog = (AddRecordDialog) dialogFactory.createAddRecordDialog(EmployeeDetails.this, this.clearFields, recordManager);
 		} else if (e.getSource() == modify || e.getSource() == edit) {
 			if (checkInput() && !checkForChanges())
 				editDetails();

@@ -3,7 +3,7 @@ public class RecordManager {
 
 	EmployeeDetails employeeDetails;
 	AddRecordDialog addRecordDialog;
-	public RecordManager(EmployeeDetails employeeDetails, AddRecordDialog add) {
+	public RecordManager(EmployeeDetails employeeDetails) {
 		this.employeeDetails = employeeDetails;
 	}
 	
